@@ -1,0 +1,32 @@
+from flask import Flask, render_template
+import requests
+from datetime import datetime
+
+app = Flask(__name__)
+
+CODEFORCES_API_URL = "https://codeforces.com/api/user.info?handles="
+
+participants = ["N.N_2004", "Kochekov", "paolofederico1", "Foros_", "g.Host", "salvini_god", "ilovelinux", "The.Artist", "M_Mattia013", "Homerus", "ale_f"]
+
+@app.route('/')
+def leaderboard():
+    ratings = []
+    try:
+        response = requests.get(CODEFORCES_API_URL + ";".join(participants))
+        data = response.json()
+        if data["status"] == "OK":
+            for user in data["result"]:
+                ratings.append({
+                    "name": user["handle"],
+                    "rating": user["rating"]
+                })
+            ratings.sort(key=lambda x: x["rating"], reverse=True)
+    except Exception as e:
+        print(f"Error fetching ratings: {e}")
+
+    current_date = datetime.now().strftime('%d/%m/%Y')
+    
+    return render_template('leaderboard.html', ratings=ratings, current_date=current_date)
+
+if __name__ == "__main__":
+    app.run(debug=True)
