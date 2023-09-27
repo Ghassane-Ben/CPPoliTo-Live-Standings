@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PoliTo 2023/24 ICPC League Leaderboard</title>
+    <link rel="icon" href="{{ url_for('static', filename='cppolito.ico') }}" type="image/x-icon">
+    <style>
+        table {
+            width: 50%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 5px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr.top3 {
+            background-color: #e0e0e0;
+            font-weight: bold;
+        }
+        caption {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <caption>PoliTo 2023/24 ICPC League Leaderboard {{ current_date }}</caption>
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Participant Name</th>
+                <th>Codeforces Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in ratings %}
+            <tr {% if loop.index <= 3 %}class="top3"{% endif %}>
+                <td>{{ loop.index }}{% if loop.index == 1 %}st{% elif loop.index == 2 %}nd{% elif loop.index == 3 %}rd{% else %}th{% endif %}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.rating }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
