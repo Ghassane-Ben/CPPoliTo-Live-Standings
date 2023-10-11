@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 CODEFORCES_API_URL = "https://codeforces.com/api/user.info?handles="
 
-participants = ["N.N.G_83", "Kochekov", "paolofederico1", "Foros_", "g.Host", "salvini_god", "ilovelinux", "The.Artist", "M_Mattia013", "Homerus", "ale_f"]
+participants = ["N.N.G_83", "Kochekov", "paolofederico1", "Foros_", "g.Host", "salvini_god", "ilovelinux", "The.Artist", "M_Mattia013", "Homerus", "ale_f", "alexonee_"]
 
 @app.route('/')
 def leaderboard():
