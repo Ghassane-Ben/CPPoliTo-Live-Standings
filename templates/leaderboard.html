@@ -41,11 +41,11 @@
         </thead>
         <tbody>
             {% for user in ratings %}
-            <tr {% if loop.index <= 3 %}class="top3"{% endif %}>
-                <td>{{ loop.index }}{% if loop.index == 1 %}st{% elif loop.index == 2 %}nd{% elif loop.index == 3 %}rd{% else %}th{% endif %}</td>
-                <td>{{ user.name }}</td>
-                <td>{{ user.rating }}</td>
-            </tr>
+             <tr {% if loop.index <= 9 %}class="top9"{% endif %}>
+    <td>{{ loop.index }}{% if loop.index == 1 %}st{% elif loop.index == 2 %}nd{% elif loop.index == 3 %}rd{% else %}th{% endif %}</td>
+    <td>{{ user.name }}</td>
+    <td>{{ user.rating }}</td>
+</tr> 
             {% endfor %}
         </tbody>
     </table>
