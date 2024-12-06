@@ -8,8 +8,10 @@ CODEFORCES_API_URL = "https://codeforces.com/api/user.info?handles="
 CONTEST_HISTORY_URL = "https://codeforces.com/api/user.rating?handle="
 
 participants = [
-    "paolofederico1", "salvini_god", "whiitex", "Petricore", "Nima_Naderi", 
-    "im_poli", "GiulioCosentino", "itsisma", "kyooz", "enigma.cpp"
+    "paolofederico1", "salvini_god", "whiitex", "Petricore", "N.N_2004", 
+    "im_poli", "GiulioCosentino", "itsisma", "kyooz", "enigma.cpp", "fakrulislam0085",
+    "janaehab", "Kenpar", "SonicGT", "Calciferll", "Annina", "krishanu8219", "ilovelinux",
+    "Omino_95", "Ghassane"
 ]
 
 # The date from which we want to start considering rating changes
