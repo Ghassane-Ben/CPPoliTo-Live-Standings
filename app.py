@@ -10,7 +10,7 @@ CONTEST_HISTORY_URL = "https://codeforces.com/api/user.rating?handle="
 participants = [
     "paolofederico1", "salvini_god", "whiitex", "Petricore", "N.N_2004", 
     "im_poli", "GiulioCosentino", "itsisma", "kyooz", "enigma.cpp", "fakrulislam0085",
-    "janaehab", "Kenpar", "SonicGT", "Calciferll", "Annina", "krishanu8219", "ilovelinux",
+    "janaehab", "Kenpar", "SonicGT", "Calciferll", "krishanu8219", "ilovelinux",
     "Omino_95", "Toukennn"
 ]
 
