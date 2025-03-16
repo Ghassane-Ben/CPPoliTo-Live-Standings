@@ -11,7 +11,8 @@ participants = [
     "paolofederico1", "salvini_god", "whiitex", "Petricore", "N.N_2004", 
     "im_poli", "GiulioCosentino", "itsisma", "kyooz", "enigma.cpp", "fakrulislam0085",
     "janaehab", "Kenpar", "SonicGT", "Calciferll", "krishanu8219", "ilovelinux",
-    "Omino_95", "Toukennn"
+    "Omino_95", "Toukennn", "GiacAlex", "luckyzio777", "airo.hub", "Luigi_05", 
+    "Parishad", "Scampo", "EgeMorgul", "luckyzio777", "AliceAliceAlice_2001"
 ]
 
 # The date from which we want to start considering rating changes
