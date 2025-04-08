@@ -4,74 +4,88 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-CODEFORCES_API_URL = "https://codeforces.com/api/user.info?handles="
-CONTEST_HISTORY_URL = "https://codeforces.com/api/user.rating?handle="
-
 participants = [
     "paolofederico1", "salvini_god", "whiitex", "Petricore", "N.N_2004", 
     "im_poli", "GiulioCosentino", "itsisma", "kyooz", "enigma.cpp", "fakrulislam0085",
     "janaehab", "Kenpar", "SonicGT", "Calciferll", "krishanu8219", "ilovelinux",
     "Omino_95", "Toukennn", "GiacAlex", "luckyzio777", "airo.hub", "Luigi_05", 
-    "Parishad", "Scampo", "EgeMorgul", "luckyzio777", "AliceAliceAlice_2001",
-    "micheleCastellano", "iZ0R"
+    "Parishad", "Scampo", "EgeMorgul", "AliceAliceAlice_2001",
+    "micheleCastellano", "iZ0R", "Ghassane"
 ]
 
-# The date from which we want to start considering rating changes
+eligibility_map = {
+    "salvini_god": "Ineligible",
+    "Petricore": "Eligible",
+    "whiitex": "Pending",
+    "N.N_2004": "Eligible",
+    "isma": "Eligible",
+    "GiulioCosentino": "Eligible",
+    "Ghassane": "Ineligible",
+    "catgirl": "Eligible",
+    "im_poli": "Eligible"
+}
+
 CUT_OFF_DATE = datetime(2024, 12, 4)
+API_USER_INFO = "https://codeforces.com/api/user.info?handles="
+API_USER_RATING = "https://codeforces.com/api/user.rating?handle="
+
+def get_color_class(rating):
+    if rating >= 3000: return "text-black"
+    if rating >= 2600: return "text-red-900"
+    if rating >= 2400: return "text-red-600"
+    if rating >= 2300: return "text-orange-500"
+    if rating >= 2100: return "text-orange-400"
+    if rating >= 1900: return "text-purple-500"
+    if rating >= 1600: return "text-blue-500"
+    if rating >= 1400: return "text-cyan-500"
+    if rating >= 1200: return "text-green-500"
+    return "text-gray-500"
+
+def get_badge_class(status):
+    return {
+        "Eligible": "bg-green-100 text-green-700",
+        "Pending": "bg-yellow-100 text-yellow-700",
+        "Ineligible": "bg-red-100 text-red-700"
+    }.get(status, "bg-gray-100 text-gray-700")
 
 @app.route('/')
 def leaderboard():
-    ratings = []
     try:
-        # Fetch user information (like current rating)
-        response = requests.get(CODEFORCES_API_URL + ";".join(participants))
-        user_data = response.json()
+        response = requests.get(API_USER_INFO + ";".join(participants))
+        user_info = response.json()
+        if user_info["status"] != "OK":
+            return "Error fetching user info", 500
 
-        if user_data["status"] != "OK":
-            return "Error fetching user data", 500
-
-        # Now, fetch rating changes for each participant
-        for user in user_data["result"]:
+        result = []
+        for user in user_info["result"]:
             handle = user["handle"]
-            max_rating_after_cutoff = 0
-            
-            # Fetch the rating history of the user
-            history_response = requests.get(CONTEST_HISTORY_URL + handle)
-            history_data = history_response.json()
+            photo = user.get("titlePhoto", "")
+            rating = 0
 
-            if history_data["status"] != "OK":
-                continue  # Skip if the history data is not fetched correctly
+            history = requests.get(API_USER_RATING + handle).json()
+            if history["status"] == "OK":
+                for contest in history["result"]:
+                    if "ratingUpdateTimeSeconds" in contest:
+                        ts = datetime.fromtimestamp(contest["ratingUpdateTimeSeconds"])
+                        if ts > CUT_OFF_DATE:
+                            rating = max(rating, contest["newRating"])
 
-            # Print the contest history response for debugging
-            print(f"Contest history for {handle}: {history_data}")
-
-            # Iterate over the user's contest history
-            for contest in history_data["result"]:
-                # Check if 'ratingUpdateTimeSeconds' exists in the contest data
-                if 'ratingUpdateTimeSeconds' not in contest:
-                    print(f"Warning: 'ratingUpdateTimeSeconds' not found in contest data for {handle}")
-                    continue  # Skip this contest if the key is missing
-
-                contest_date = datetime.fromtimestamp(contest["ratingUpdateTimeSeconds"])
-                if contest_date > CUT_OFF_DATE:
-                    # Update max rating if this contest has a higher rating
-                    max_rating_after_cutoff = max(max_rating_after_cutoff, contest["newRating"])
-            
-            # If no rating change was found after the cutoff date, assign rating 0
-            ratings.append({
-                "name": handle,
-                "rating": max_rating_after_cutoff
+            eligibility = eligibility_map.get(handle, "Eligible")
+            result.append({
+                "handle": handle,
+                "photo": photo,
+                "rating": rating,
+                "eligibility": eligibility,
+                "color": get_color_class(rating),
+                "badge": get_badge_class(eligibility)
             })
-        
-        # Sort by the max rating gained after the cutoff date (descending order)
-        ratings.sort(key=lambda x: x["rating"], reverse=True)
+
+        result.sort(key=lambda x: x["rating"], reverse=True)
+        return render_template("leaderboard.html", ratings=result)
 
     except Exception as e:
-        print(f"Error fetching data: {e}")
-        return "Error fetching data", 500
-    
-    current_date = datetime.now().strftime('%d/%m/%Y')
-    return render_template('leaderboard.html', ratings=ratings, current_date=current_date)
+        print(f"Error: {e}")
+        return "Internal Server Error", 500
 
 if __name__ == "__main__":
     app.run(debug=True)
