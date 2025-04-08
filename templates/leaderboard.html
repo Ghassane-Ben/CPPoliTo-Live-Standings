@@ -1,69 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PoliTo 2025 ICPC League Leaderboard</title>
-    <link rel="icon" href="https://raw.githubusercontent.com/Ghassane-Ben/CPPoliTo-Live-Standings/main/templates/cppolito.ico" type="image/x-icon">
-    <style>
-        table {
-            width: 60%;
-            margin: 20px auto;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 5px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        tr.top9 {
-            background-color: #e0e0e0;
-            font-weight: bold;
-        }
-        .team-1 {
-            background-color: #ffd700;  /* Gold */
-        }
-        .team-2 {
-            background-color: #c0c0c0;  /* Silver */
-        }
-        .team-3 {
-            background-color: #cd7f32;  /* Bronze */
-        }
-        caption {
-            font-size: 1.5em;
-            margin-bottom: 10px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Codeforces Standings</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <table>
-        <caption>PoliTo 2025 ICPC League - {{ current_date }}</caption>
-        <thead>
-            <tr>
-                <th>Rank</th>
-                <th>Participant Name</th>
-                <th>Codeforces Max Rating (From the 04/12/2024)</th>
-                <th>Team</th>
-            </tr>
+<body class="bg-gray-50 p-4">
+  <div class="max-w-5xl mx-auto">
+    <h1 class="text-2xl font-bold mb-2">Codeforces Standings</h1>
+    <p class="text-sm text-gray-600 mb-4">Top 9 eligible participants will qualify for ICPC-SWERC. Last updated: {{ current_date }}</p>
+
+    <div class="bg-white shadow-md rounded-xl overflow-hidden">
+      <table class="w-full text-left">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="px-4 py-2">#</th>
+            <th class="px-4 py-2">User</th>
+            <th class="px-4 py-2">Max Rating Since Dec 4 2024</th>
+            <th class="px-4 py-2">Eligibility</th>
+          </tr>
         </thead>
         <tbody>
-            {% for user in ratings %}
-                <tr class="{% if loop.index <= 3 %}team-1{% elif loop.index <= 6 %}team-2{% elif loop.index <= 9 %}team-3{% endif %}">
-                    <td>{{ loop.index }}{% if loop.index == 1 %}st{% elif loop.index == 2 %}nd{% elif loop.index == 3 %}rd{% else %}th{% endif %}</td>
-                    <td>{{ user.name }}</td>
-                    <td>{{ user.rating }}</td>
-                    <td>
-                        {% if loop.index <= 3 %}Team 1
-                        {% elif loop.index <= 6 %}Team 2
-                        {% elif loop.index <= 9 %}Team 3
-                        {% else %}-{% endif %}
-                    </td>
-                </tr> 
-            {% endfor %}
+          {% for user in ratings %}
+          <tr class="border-t">
+            <td class="px-4 py-2">{{ loop.index }}</td>
+            <td class="px-4 py-2 flex items-center gap-2">
+              <img src="{{ user.photo }}" alt="{{ user.name }}" class="w-8 h-8 rounded-full" onerror="this.src='https://sta.codeforces.com/s/74256/images/no-avatar.jpg'" />
+              <span class="font-semibold {{ user.color_class }}">{{ user.name }}</span>
+            </td>
+            <td class="px-4 py-2">{{ user.rating }}</td>
+            <td class="px-4 py-2">
+              {% if user.eligibility == 'Eligible' %}
+              <span class="px-2 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">Eligible</span>
+              {% elif user.eligibility == 'Pending' %}
+              <span class="px-2 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700">Pending</span>
+              {% else %}
+              <span class="px-2 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">Ineligible</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
         </tbody>
-    </table>
+      </table>
+    </div>
+  </div>
 </body>
 </html>
