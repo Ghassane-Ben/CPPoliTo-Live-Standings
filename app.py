@@ -10,7 +10,7 @@ participants = [
     "janaehab", "Kenpar", "SonicGT", "Calciferll", "krishanu8219", "ilovelinux",
     "Omino_95", "Toukennn", "GiacAlex", "luckyzio777", "airo.hub", "Luigi_05", 
     "Parishad", "Scampo", "EgeMorgul", "AliceAliceAlice_2001",
-    "micheleCastellano", "iZ0R", "Ghassane"
+    "micheleCastellano", "iZ0R", "Ghassane", "Ege_78"
 ]
 
 eligibility_map = {
@@ -22,7 +22,8 @@ eligibility_map = {
     "GiulioCosentino": "Eligible",
     "Ghassane": "Ineligible",
     "catgirl": "Eligible",
-    "im_poli": "Eligible"
+    "im_poli": "Eligible",
+    "paolofederico1": "Pending"
 }
 
 CUT_OFF_DATE = datetime(2024, 12, 4)
